@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/task/v1")
@@ -34,6 +35,18 @@ public class TaskController {
     public ResponseEntity<HttpStatus> deleteTask(@PathVariable("id") long idTask){
         taskService.deleteTask(idTask);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Task> getTaskById(@PathVariable("id") Long id){
+        Optional<Task> task = taskService.getTaskById(id);
+        return new ResponseEntity<>(task.get(), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Task> updateTask(@PathVariable("id") Long id, @RequestBody Task taskBody){
+        Task taskUpdate = taskService.updateTask(id,taskBody);
+        return new ResponseEntity<>(taskUpdate, HttpStatus.NO_CONTENT);
     }
 
 }
